@@ -1,6 +1,8 @@
 import pygame
 import logging
+import local
 from typing import Optional, Tuple, List
+
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -123,7 +125,7 @@ def draw_grid(
         draw_grid_lines(screen, total_rows, total_cols, cell_size)
 
     except (IndexError, TypeError, pygame.error) as e:
-        logger.error(f"Ошибка при рисовании: {e}")
+        logger.error(f'{local.ERROR_DRAWING} {e}')
 
 
 def draw_grid_lines(
@@ -153,7 +155,7 @@ def draw_grid_lines(
             pygame.draw.line(screen, GRID_LINE_COLOR, (0, y), (width, y))
 
     except pygame.error as e:
-        logger.error(f"Ошибка при рисовании линий сетки: {e}")
+        logger.error(f'{local.ERROR_GRID_LINES} {e}')
 
 
 def get_cell_from_mouse(
@@ -235,7 +237,7 @@ def draw_ui(
         _draw_control_instructions(screen, small_font, height)
 
     except pygame.error as e:
-        logger.error(f"Ошибка при рисовании пользовательского интерфейса: {e}")
+        logger.error(f'{local.ERROR_USER_INTERFACE} {e}')
 
 _controls_cache = None
 _controls_positions = None
