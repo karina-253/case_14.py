@@ -5,19 +5,6 @@ from rules import next_generation
 import game
 
 
-def get_filename_from_user(prompt: str) -> str:
-    """
-    Asks the user for the file name.
-
-    Args:
-        prompt (str): The prompt text
-
-    Returns:
-        str: The file name entered by the user
-    """
-    return input(prompt)
-
-
 def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[list[int]], dict]:
     """
     Processes keyboard events to control the simulation.
@@ -46,14 +33,9 @@ def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[
         grid = create_empty_grid(len(grid), len(grid[0]))
         state['generation'] = 0
     elif event.key == pygame.K_l:
-        filename = get_filename_from_user("Введите имя файла для загрузки: ")
-        if filename:
-            try:
-                new_grid = load_grid_from_file(filename)
-                grid = new_grid
-                state['generation'] = 0
-            except FileNotFoundError:
-                print(f"Файл '{filename}' не найден!")
+        filename = 'input.txt'
+        grid = load_grid_from_file(filename)
+        state['generation'] = 0
     elif event.key == pygame.K_f:
         filename = 'save.txt'
         save_grid_to_file(grid, filename)
