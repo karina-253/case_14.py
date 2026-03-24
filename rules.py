@@ -3,16 +3,16 @@ from typing import List, Tuple
 
 neighbor_offsets = [
     (-1, -1), (-1, 0), (-1, 1),
-    (0, -1),           (0, 1),
+    (0, -1), (0, 1),
     (1, -1), (1, 0), (1, 1)
 ]
 
 
 def fix_grid_boundaries(
-    game_board: List[List[int]],
-    current_row: int,
-    current_col: int,
-    wrap_edges: bool = True
+        game_board: List[List[int]],
+        current_row: int,
+        current_col: int,
+        wrap_edges: bool = True
 ) -> Tuple[int, int]:
     """
     Ensures that the coordinates stay within the grid boundaries, or wraps them if needed.
@@ -26,7 +26,7 @@ def fix_grid_boundaries(
     Returns:
         Tuple with corrected (row, column) indices
     """
-  
+
     if not wrap_edges:
         return current_row, current_col
 
@@ -40,10 +40,10 @@ def fix_grid_boundaries(
 
 
 def count_live_neighbors(
-    game_board: List[List[int]],
-    row_index: int,
-    col_index: int,
-    wrap_edges: bool = True
+        game_board: List[List[int]],
+        row_index: int,
+        col_index: int,
+        wrap_edges: bool = True
 ) -> int:
     """
     Counts how many neighboring cells are alive around a specific cell.
@@ -57,7 +57,7 @@ def count_live_neighbors(
     Returns:
         Number of live neighboring cells (0-8)
     """
-  
+
     total_rows = len(game_board)
     total_cols = len(game_board[0])
     alive_neighbors_count = 0
@@ -72,10 +72,10 @@ def count_live_neighbors(
             )
         else:
             if (
-                neighbor_row < 0
-                or neighbor_row >= total_rows
-                or neighbor_col < 0
-                or neighbor_col >= total_cols
+                    neighbor_row < 0
+                    or neighbor_row >= total_rows
+                    or neighbor_col < 0
+                    or neighbor_col >= total_cols
             ):
                 continue
 
@@ -85,8 +85,8 @@ def count_live_neighbors(
 
 
 def next_generation(
-    current_board: List[List[int]],
-    wrap_edges: bool = True
+        current_board: List[List[int]],
+        wrap_edges: bool = True
 ) -> List[List[int]]:
     """
     Creates the next generation based on the current state following "Game of Life" rules.
@@ -98,7 +98,7 @@ def next_generation(
     Returns:
         New grid of cells representing the next generation
     """
-  
+
     rows_count = len(current_board)
     cols_count = len(current_board[0])
 
@@ -109,14 +109,14 @@ def next_generation(
             neighbors = count_live_neighbors(current_board, row_idx, col_idx, wrap_edges)
 
             if (current_board[row_idx][col_idx] == 1 and neighbors in (2, 3)) or \
-               (current_board[row_idx][col_idx] == 0 and neighbors == 3):
+                    (current_board[row_idx][col_idx] == 0 and neighbors == 3):
                 new_board[row_idx][col_idx] = 1
 
     return new_board
 
 
 def count_live_cells_on_board(
-    game_board: List[List[int]]
+        game_board: List[List[int]]
 ) -> int:
     """
     Counts how many cells are alive on the entire board.
@@ -127,14 +127,14 @@ def count_live_cells_on_board(
     Returns:
         Total number of live cells
     """
-  
+
     total_alive = sum(sum(row) for row in game_board)
     return total_alive
 
 
 def check_if_stable(
-    prev_board: List[List[int]],
-    current_board: List[List[int]]
+        prev_board: List[List[int]],
+        current_board: List[List[int]]
 ) -> bool:
     """
     Checks if the game has stabilized — that is, no changes between generations.
@@ -147,4 +147,4 @@ def check_if_stable(
         True if no changes occur, false otherwise
     """
     return prev_board == current_board
-  
+    
