@@ -5,13 +5,17 @@ import rules
 import game
 
 
-def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[list[int]], dict]:
+def handle_keyboard_input(
+        event: pygame.event.Event,
+        state: dict
+) -> tuple[list[list[int]], dict]:
     """
     Processes keyboard events to control the simulation.
 
     Args:
         event (pygame.event.Event): The keyboard event.
-        state (dict): The current game state containing grid, running status, speed, and generation.
+        state (dict): The current game state containing grid, running status,
+        speed, and generation.
 
     Returns:
         tuple: Updated grid and game state dictionary.
@@ -51,7 +55,12 @@ def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[
     return grid, state
 
 
-def handle_mouse_click(event: pygame.event.Event, grid: list[list[int]], rows: int, cols: int) -> list[list[int]]:
+def handle_mouse_click(
+        event: pygame.event.Event,
+        grid: list[list[int]],
+        rows: int,
+        cols: int
+) -> list[list[int]]:
     """
     Handles mouse click events to toggle individual cells on the grid.
 
@@ -71,8 +80,10 @@ def handle_mouse_click(event: pygame.event.Event, grid: list[list[int]], rows: i
         cell_size = 20
         screen, cell_size, rows, cols = game.init_display(rows, cols, cell_size)
         row, col = game.get_cell_from_mouse(mouse_pos, cell_size, rows, cols)
+
         if row is not None and col is not None:
             grid[row][col] = 1 - grid[row][col]
+
     return grid
 
 
@@ -94,6 +105,7 @@ def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
                 line = ''.join(str(cell) for cell in row)
                 f.write(line + '\n')
         print(f"Configuration saved successfully to {filename}")
+
     except Exception:
         print(f"Error writing to file {filename}")
 
@@ -108,9 +120,10 @@ def main() -> None:
 
     rows, cols = 30, 40
     cell_size = 20
-    screen, cell_size, rows, cols = game.init_display(rows, cols, cell_size)
 
+    screen, cell_size, rows, cols = game.init_display(rows, cols, cell_size)
     grid = data.random_grid(rows, cols, prob=0.5)
+
     state = {
         'grid': grid,
         'running': False,
@@ -139,8 +152,17 @@ def main() -> None:
         screen.fill(game.DEAD_COLOR)
         mouse_pos = pygame.mouse.get_pos()
         hover_cell = game.get_cell_from_mouse(mouse_pos, cell_size, rows, cols)
+
         game.draw_grid(screen, state['grid'], cell_size, hover_cell)
-        game.draw_ui(screen, state['generation'], state['speed'], state['running'], rows, cols)
+        game.draw_ui(
+            screen,
+            state['generation'],
+            state['speed'],
+            state['running'],
+            rows,
+            cols
+        )
+
         pygame.display.flip()
         clock.tick(state['speed'])
 
