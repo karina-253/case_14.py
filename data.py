@@ -100,9 +100,9 @@ def save_grid_to_file(grid: List[List[int]], filename: str) -> None:
         raise ValueError("Сетка пустая")
 
     first_row = len(grid[0])
-    for r_idx, row in enumerate(grid):
-        if len(row) != first_row:
-            raise ValueError(f"Ошибка в строке {r_idx}: разная длина строк")
+    for row_idx, row_data in enumerate(grid):
+        if len(row_data) != first_row:
+            raise ValueError(f"Ошибка в строке {row_idx + 1}: разная длина строк")
 
     with open(filename, 'w', encoding='utf-8') as f:
         for row in grid:
