@@ -1,7 +1,7 @@
 import pygame
 import sys
-from data import create_empty_grid, random_grid, load_grid_from_file
-from rules import next_generation
+import data
+import rules
 import game
 
 
@@ -16,6 +16,7 @@ def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[
     Returns:
         tuple: Updated grid and game state dictionary.
     """
+
     grid = state['grid']
     running = state['running']
     speed = state['speed']
@@ -24,17 +25,17 @@ def handle_keyboard_input(event: pygame.event.Event, state: dict) -> tuple[list[
     if event.key == pygame.K_SPACE:
         state['running'] = not running
     elif event.key == pygame.K_s or event.key == pygame.K_RIGHT:
-        grid = next_generation(grid, wrap_edges=True)
+        grid = rules.next_generation(grid, wrap_edges=True)
         state['generation'] = generation + 1
     elif event.key == pygame.K_r:
-        grid = random_grid(len(grid), len(grid[0]), prob=0.5)
+        grid = data.random_grid(len(grid), len(grid[0]), prob=0.5)
         state['generation'] = 0
     elif event.key == pygame.K_c:
-        grid = create_empty_grid(len(grid), len(grid[0]))
+        grid =data.create_empty_grid(len(grid), len(grid[0]))
         state['generation'] = 0
     elif event.key == pygame.K_l:
         filename = 'input.txt'
-        grid = load_grid_from_file(filename)
+        grid = data.load_grid_from_file(filename)
         state['generation'] = 0
     elif event.key == pygame.K_f:
         filename = 'save.txt'
@@ -63,6 +64,7 @@ def handle_mouse_click(event: pygame.event.Event, grid: list[list[int]], rows: i
     Returns:
         list of list of int: The updated grid after toggling the clicked cell.
     """
+
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_pos = pygame.mouse.get_pos()
         rows, cols = 30, 40
@@ -85,6 +87,7 @@ def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
     Returns:
         None
     """
+
     try:
         with open(filename, 'w') as f:
             for row in grid:
@@ -102,11 +105,12 @@ def main() -> None:
     Initializes display, grid, and state, then processes events,
     updates grid, and renders frames continuously.
     """
+
     rows, cols = 30, 40
     cell_size = 20
     screen, cell_size, rows, cols = game.init_display(rows, cols, cell_size)
 
-    grid = random_grid(rows, cols, prob=0.5)
+    grid = data.random_grid(rows, cols, prob=0.5)
     state = {
         'grid': grid,
         'running': False,
@@ -129,7 +133,7 @@ def main() -> None:
                 state['grid'] = handle_mouse_click(event, state['grid'], rows, cols)
 
         if state['running']:
-            state['grid'] = next_generation(state['grid'], wrap_edges=True)
+            state['grid'] = rules.next_generation(state['grid'], wrap_edges=True)
             state['generation'] += 1
 
         screen.fill(game.DEAD_COLOR)
@@ -143,3 +147,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    
