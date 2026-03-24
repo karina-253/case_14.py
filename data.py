@@ -1,5 +1,6 @@
 import random
 import os
+import local
 from typing import List
 
 
@@ -16,7 +17,7 @@ def create_empty_grid(rows: int, cols: int) -> List[List[int]]:
     """
 
     if rows < 1 or cols < 1:
-        raise ValueError("Размеры сетки должны быть положительными")
+        raise ValueError(f'{local.POSITIVE_SIZES}')
 
     return [[0] * cols for row_index in range(rows)]
 
@@ -35,10 +36,10 @@ def random_grid(rows: int, cols: int, prob: float = 0.3) -> List[List[int]]:
     """
 
     if not 0 <= prob <= 1:
-        raise ValueError("Вероятность должна быть от 0 до 1")
+        raise ValueError(f'{local.PROBABILITY}')
 
     grid_data = []
-    
+
     for row_index in range(rows):
         row = [1 if random.random() < prob else 0 for col_index in range(cols)]
         grid_data.append(row)
@@ -61,7 +62,7 @@ def load_grid_from_file(filename: str) -> List[List[int]]:
     """
 
     if not os.path.exists(filename):
-        raise FileNotFoundError(f"Файл {filename} не найден")
+        raise FileNotFoundError(f'{local.FILE} "{filename}" {local.NOT_FOUND}')
 
     loaded_grid = []
 
@@ -73,17 +74,17 @@ def load_grid_from_file(filename: str) -> List[List[int]]:
                 continue
 
             if not all(char in '01' for char in processed_line):
-                raise ValueError("обнаружены недопустимые символы. Ожидаются только '0' или '1'.")
+                raise ValueError(f'{local.INVALID_CHARACTERS}')
 
             loaded_grid.append([int(char) for char in processed_line])
 
     if not loaded_grid:
-        raise ValueError(f"Файл '{filename}' не содержит данных для сетки.")
+        raise ValueError(f'{local.FILE} "{filename}" {local.NOT_CONTAIN_DATA}')
 
     expected_cols = len(loaded_grid[0])
     for row_idx, row_data in enumerate(loaded_grid):
         if len(row_data) != expected_cols:
-            raise ValueError(f"Длина строки {row_idx + 1} не совпадает с ожидаемой.")
+            raise ValueError(f'{local.LINE_LENGTH} {row_idx + 1} {local.NOT_MATCH_EXPECTED}')
     return loaded_grid
 
 
@@ -97,12 +98,12 @@ def save_grid_to_file(grid: List[List[int]], filename: str) -> None:
     """
 
     if not grid or not grid[0]:
-        raise ValueError("Сетка пустая")
+        raise ValueError(f'{local.EMPTY_GRID}')
 
     first_row = len(grid[0])
     for row_idx, row_data in enumerate(grid):
         if len(row_data) != first_row:
-            raise ValueError(f"Ошибка в строке {row_idx + 1}: разная длина строк")
+            raise ValueError(f'{local.ERROR_IN_LINE} {row_idx + 1}: {local.DIFFERENT_LENGTHS}')
 
     with open(filename, 'w', encoding='utf-8') as f:
         for row in grid:
@@ -127,3 +128,4 @@ def set_cell(grid: List[List[int]], row: int, col: int, value: int) -> bool:
         grid[row][col] = value
         return True
     return False
+    
