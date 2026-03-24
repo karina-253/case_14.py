@@ -38,6 +38,7 @@ def random_grid(rows: int, cols: int, prob: float = 0.3) -> List[List[int]]:
         raise ValueError("Вероятность должна быть от 0 до 1")
 
     grid_data = []
+    
     for row_index in range(rows):
         row = [1 if random.random() < prob else 0 for col_index in range(cols)]
         grid_data.append(row)
