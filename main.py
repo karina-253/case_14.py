@@ -3,6 +3,7 @@ import sys
 import data
 import rules
 import game
+import local
 
 
 def handle_keyboard_input(
@@ -104,10 +105,10 @@ def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
             for row in grid:
                 line = ''.join(str(cell) for cell in row)
                 f.write(line + '\n')
-        print(f"Configuration saved successfully to {filename}")
+        print(f'{local.CONFIGURATIGURATION_SAVED} {filename}')
 
     except Exception:
-        print(f"Error writing to file {filename}")
+        print(f'{local.ERROR_WRITING} {filename}')
 
 
 def main() -> None:
@@ -169,4 +170,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
+        
