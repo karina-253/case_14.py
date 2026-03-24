@@ -1,8 +1,9 @@
 import random
 import os
+from typing import List
 
 
-def create_empty_grid(rows: int, cols: int) -> list[list[int]]:
+def create_empty_grid(rows: int, cols: int) -> List[List[int]]:
     """
     Creates an empty grid (all cells are dead).
 
@@ -11,16 +12,16 @@ def create_empty_grid(rows: int, cols: int) -> list[list[int]]:
         cols (int): number of columns
 
     Returns:
-        list[list[int]]: a list of lists with zeros
+        List[lList[int]]: a list of lists with zeros
     """
 
     if rows < 1 or cols < 1:
         raise ValueError("Размеры сетки должны быть положительными")
 
-    return [[0] * cols for _ in range(rows)]
+    return [[0] * cols for row_index in range(rows)]
 
 
-def random_grid(rows: int, cols: int, prob: float = 0.3) -> list[list[int]]:
+def random_grid(rows: int, cols: int, prob: float = 0.3) -> List[List[int]]:
     """
     Fills the grid with random values with a given probability of life.
 
@@ -30,20 +31,20 @@ def random_grid(rows: int, cols: int, prob: float = 0.3) -> list[list[int]]:
         prob (float): probability of a live cell appearing (from 0 to 1)
 
     Returns:
-        list[list[int]]: a grid with random values
+        List[List[int]]: a grid with random values
     """
 
     if not 0 <= prob <= 1:
         raise ValueError("Вероятность должна быть от 0 до 1")
 
     grid_data = []
-    for _ in range(rows):
-        row = [1 if random.random() < prob else 0 for _ in range(cols)]
+    for row_index in range(rows):
+        row = [1 if random.random() < prob else 0 for col_index in range(cols)]
         grid_data.append(row)
     return grid_data
 
 
-def load_grid_from_file(filename: str) -> list[list[int]]:
+def load_grid_from_file(filename: str) -> List[List[int]]:
     """
     Reads the grid from a text file.
     File format: each line contains a sequence of 0 and 1 without spaces.
@@ -55,7 +56,7 @@ def load_grid_from_file(filename: str) -> list[list[int]]:
         filename (str): name of the file
 
     Returns:
-        list[list[int]]: a grid from the file
+        List[List[int]]: a grid from the file
     """
 
     if not os.path.exists(filename):
@@ -67,7 +68,7 @@ def load_grid_from_file(filename: str) -> list[list[int]]:
         for line_num, raw_line in enumerate(f, 1):
             processed_line = raw_line.strip()
 
-            if not processed_line: 
+            if not processed_line:
                 continue
 
             if not all(char in '01' for char in processed_line):
@@ -81,11 +82,11 @@ def load_grid_from_file(filename: str) -> list[list[int]]:
     expected_cols = len(loaded_grid[0])
     for row_idx, row_data in enumerate(loaded_grid):
         if len(row_data) != expected_cols:
-            raise ValueError("Длина строки  не совпадает с ожидаемой.")
+            raise ValueError("Длина строки не совпадает с ожидаемой.")
     return loaded_grid
 
 
-def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
+def save_grid_to_file(grid: List[List[int]], filename: str) -> None:
     """
     Saves the grid to a file.
 
@@ -93,6 +94,7 @@ def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
         grid (list): grid to save
         filename (str): name of the file
     """
+
     if not grid or not grid[0]:
         raise ValueError("Сетка пустая")
 
@@ -106,18 +108,20 @@ def save_grid_to_file(grid: list[list[int]], filename: str) -> None:
             f.write(''.join(str(cell) for cell in row) + '\n')
 
 
-def set_cell(grid: list[list[int]], row: int, col: int, value: int) -> bool:
+def set_cell(grid: List[List[int]], row: int, col: int, value: int) -> bool:
     """
     Sets the state of a specific cell.
 
     Args:
-        grid: grid
-        row: row index
-        col: column index
-        value: value (0 or 1)
+        grid (List[List[int]]): grid
+        row (int): row index
+        col (int): column index
+        value (int): value (0 or 1)
 
     Returns:
-        True if successful, False if the coordinates are out of range"""
+        True if successful, False if the coordinates are out of range
+    """
+
     if 0 <= row < len(grid) and 0 <= col < len(grid[0]):
         grid[row][col] = value
         return True
