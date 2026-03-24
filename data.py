@@ -83,7 +83,7 @@ def load_grid_from_file(filename: str) -> List[List[int]]:
     expected_cols = len(loaded_grid[0])
     for row_idx, row_data in enumerate(loaded_grid):
         if len(row_data) != expected_cols:
-            raise ValueError("Длина строки не совпадает с ожидаемой.")
+            raise ValueError(f"Длина строки {row_idx + 1} не совпадает с ожидаемой.")
     return loaded_grid
 
 
